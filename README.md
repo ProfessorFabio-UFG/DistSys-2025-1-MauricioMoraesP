@@ -1,28 +1,78 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/KCCNwrQi)
-# Pub-Sub-Basics-with-ZeroMQ
+# 📨 Sistema Publisher-Subscriber com ZeroMQ (Python)
 
-This is a very simple pub-sub app implemented with ZeroMQ. Use it as an example for the pub-sub assignment (topic-based chat system).
+Este projeto implementa um sistema **Publisher/Subscriber** utilizando a biblioteca **ZeroMQ (PyZMQ)** com interface interativa via prompt.
 
-### First, install ZeroMQ (on each machine):
+Permite:
+- Envio de mensagens para múltiplos tópicos.
+- Assinatura dinâmica de tópicos.
+- Comunicação entre processos ou máquinas via TCP.
 
-    sudo apt update
+---
 
-    sudo apt install python3-zmq
+## 📁 Estrutura do Projeto
 
-### Next, configure the IP address and port number of the publisher's machine in the constPS.py file
+```
+DistSys-2025-1-MauricioMoraesP/
+├── constPS.py              # Arquivo com as constantes de IP e porta
+├── publisher_interactive.py  # Publicador interativo
+├── subscriber_interactive.py # Assinante interativo
+└── README.md               # Este arquivo
+```
 
-Note: Make sure that this repo is cloned in all the machines used for this experiment.
+---
+#### Instale com:
 
-### Then, run the publisher and subscriber:
+```bash
+pip install pyzmq
+```
+---
 
-On the machine for which the IP address was configured:
+## ▶️ Como Executar
 
-    python3 publisher.py
+#### 1. Abra dois terminais de máquinas distintas na aws.
 
-On another machine:
+#### 🧑‍💻 Terminal 1 - Rodar o Subscriber
 
-    python3 subscriber.py
+```bash
+python3 subscriber_interactive.py
+```
 
-### Now, add other topics for in the publisher and create subscribers for the new topics.
+Você verá:
 
-    
+```
+=== Subscriber Iniciado ===
+Digite tópicos para assinar (ex: TIME, ALERTA).
+Digite 'start' para começar a escutar mensagens.
+```
+
+- Digite os nomes dos tópicos que deseja assinar (ex: `ALERTA`, `TIME`).
+- Depois digite `start` para começar a receber mensagens.
+
+---
+
+#### 📢 Terminal 2 - Rodar o Publisher
+
+```bash
+python3 publisher_interactive.py
+```
+
+Você verá:
+
+```
+=== Publisher Iniciado ===
+Digite mensagens no formato: <TOPICO> <MENSAGEM>
+Exemplo: ALERTA Sistema será reiniciado
+Digite 'sair' para encerrar.
+```
+
+- Envie mensagens no formato:
+  ```bash
+  ALERTA Teste do sistema
+  ```
+
+- O subscriber que assinou `ALERTA` receberá:
+  ```
+  ALERTA [12:34:56] Teste do sistema
+  ```
+
+---

@@ -1,11 +1,29 @@
-import zmq, time
-from constPS import * #-
+import zmq
+from constPS import *
+from datetime import datetime
 
 context = zmq.Context()
-s = context.socket(zmq.PUB)        # create a publisher socket
-p = "tcp://"+HOST+":"+ PORT      # how and where to communicate
-s.bind(p)                          # bind socket to the address
+s = context.socket(zmq.PUB)
+p = f"tcp://{HOST}:{PORT}"
+s.bind(p)
+
+print("=== Publisher Iniciado ===")
+print("Digite mensagens no formato: <TOPICO> <MENSAGEM>")
+print("Exemplo: ALERTA Sistema será reiniciado")
+print("Digite 'sair' para encerrar.\n")
+
 while True:
-	time.sleep(5)                    # wait every 5 seconds
-	msg = str.encode("TIME " + time.asctime())
-	s.send(msg) # publish the current time
+    entrada = input("Publicar> ")
+
+    if entrada.lower() == "sair":
+        break
+
+    if " " not in entrada:
+        print("Formato inválido. Use: <TOPICO> <MENSAGEM>")
+        continue
+
+    topico, mensagem = entrada.split(" ", 1)
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    full_message = f"{topico.upper()} [{timestamp}] {mensagem}"
+    s.send_string(full_message)
+    print(f">>> Enviado: {full_message}")
